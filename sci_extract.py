@@ -1,7 +1,13 @@
 from astropy.io import fits
+import argparse
 
-files = input("file names : ")
+parser = argparse.ArgumentParser(description='Extract SCI image')
+parser.add_argument('file', type=str, help='File name')
+args = parser.parse_args()
 
-a = fits.open(files)
+file = args.file
+file_out = f'{file}_sci.fits'
 
-fits.writeto(files, a[1].data, a[1].header, overwrite=True)
+hdu = fits.open(file)
+
+fits.writeto(file_out, hdu['SCI'].data, hdu['SCI'].header, overwrite=True)
